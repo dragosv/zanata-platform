@@ -36,6 +36,7 @@ import org.dbunit.operation.DatabaseOperation;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.zanata.RestTest;
 import org.zanata.common.LocaleId;
+import org.zanata.common.MinContentState;
 import org.zanata.provider.DBUnitProvider;
 import org.zanata.rest.ResourceRequest;
 import org.zanata.rest.dto.resource.Resource;
@@ -428,7 +429,7 @@ public abstract class SourceAndTranslationResourceRestBase extends RestTest {
         @Deprecated
         @Override
         public Response getTranslations(String idNoSlash, LocaleId locale,
-                final Set<String> extensions, final boolean createSkeletons,
+                final Set<String> extensions, final boolean createSkeletons, final MinContentState minContentState,
                 String eTag) {
             return new ResourceRequest(
                     getRestEndpointUrl(DEPRECATED_BASE_PATH + idNoSlash + "/translations/" + locale),
@@ -439,6 +440,7 @@ public abstract class SourceAndTranslationResourceRestBase extends RestTest {
                     return addExtensionToRequest(extensions, webTarget)
                             .queryParam("skeletons",
                                     String.valueOf(createSkeletons))
+                            .queryParam("minContentState", minContentState.toString())
                             .request().header(HttpHeaders.ACCEPT,
                                     MediaType.APPLICATION_XML_TYPE);
                 }
@@ -452,7 +454,7 @@ public abstract class SourceAndTranslationResourceRestBase extends RestTest {
         @Override
         public Response getTranslationsWithDocId(LocaleId locale,
                 String docId,
-                Set<String> extensions, boolean createSkeletons,
+                Set<String> extensions, boolean createSkeletons, MinContentState minContentState,
                 String eTag) {
             return new ResourceRequest(
                     getRestEndpointUrl(BASE_PATH + "/translations/" + locale),
@@ -464,6 +466,7 @@ public abstract class SourceAndTranslationResourceRestBase extends RestTest {
                             .queryParam("docId", docId)
                             .queryParam("skeletons",
                                     String.valueOf(createSkeletons))
+                            .queryParam("minContentState", minContentState.toString())
                             .request().header(HttpHeaders.ACCEPT,
                                     MediaType.APPLICATION_XML_TYPE);
                 }

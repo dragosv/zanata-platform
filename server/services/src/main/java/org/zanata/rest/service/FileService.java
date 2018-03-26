@@ -52,10 +52,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zanata.adapter.FileFormatAdapter;
 import org.zanata.adapter.po.PoWriter2;
-import org.zanata.common.ContentState;
-import org.zanata.common.DocumentType;
-import org.zanata.common.FileTypeInfo;
-import org.zanata.common.LocaleId;
+import org.zanata.common.*;
 import org.zanata.dao.DocumentDAO;
 import org.zanata.dao.ProjectIterationDAO;
 import org.zanata.file.FilePersistService;
@@ -230,7 +227,7 @@ public class FileService implements FileResource {
     @SuppressFBWarnings({"SLF4J_FORMAT_SHOULD_BE_CONST"})
     public Response downloadTranslationFile(String projectSlug,
             String iterationSlug, String locale, String fileType,
-            String docId) {
+            String docId, String minContentState) {
         GlobalDocumentId id =
                 new GlobalDocumentId(projectSlug, iterationSlug, docId);
         // TODO scan (again) for virus
@@ -254,7 +251,7 @@ public class FileService implements FileResource {
             TranslationsResource transRes =
                     (TranslationsResource) this.translatedDocResourceService
                             .getTranslationsWithDocId(new LocaleId(locale), convertedId,
-                                    extensions, true, null)
+                                    extensions, true,  MinContentState.fromString(minContentState), null)
                             .getEntity();
             Resource res = this.resourceUtils.buildResource(document);
             StreamingOutput output = new POStreamingOutput(res, transRes,
@@ -276,7 +273,7 @@ public class FileService implements FileResource {
             TranslationsResource transRes =
                     (TranslationsResource) this.translatedDocResourceService
                             .getTranslationsWithDocId(new LocaleId(locale), convertedId,
-                                    extensions, true, null)
+                                    extensions, true, MinContentState.fromString(minContentState), null)
                             .getEntity();
             // Filter to only provide translated targets. "Preview" downloads
             // include fuzzy.

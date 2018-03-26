@@ -235,6 +235,8 @@ public interface FileResource {
      *            'baked')
      * @param docId
      *            Document identifier to fetch translations for.
+     * @param minContentState
+     *            Minimum content state.
      * @return The following response status codes will be returned from this
      *         operation:<br>
      *         OK(200) - A translation file in the requested format with
@@ -254,7 +256,8 @@ public interface FileResource {
                     @PathParam("iterationSlug") String iterationSlug,
                     @PathParam("locale") String locale,
                     @PathParam("fileType") String fileExtension,
-                    @QueryParam("docId") String docId);
+                    @QueryParam("docId") String docId,
+                    @QueryParam("minContentState") String minContentState);
 
     /**
      * Downloads a previously generated file.

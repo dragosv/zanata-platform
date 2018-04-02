@@ -2377,6 +2377,20 @@
     </profile>
 
     <profile>
+      <id>wildfly-embedded</id>
+      <activation>
+        <property>
+          <name>appserver</name>
+          <value>wildfly-embedded</value>
+        </property>
+      </activation>
+      <properties>
+        <!-- In case this profile was activated by default: -->
+        <appserver>wildfly-embedded</appserver>
+      </properties>
+    </profile>
+
+    <profile>
       <id>build zanata-frontend module</id>
       <activation>
         <property>

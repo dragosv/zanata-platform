@@ -41,9 +41,13 @@
   </container>
   <container qualifier="wildfly-embedded">
     <configuration>
-      <property name="jbossHome">target/wildfly-10.0.0.Final/</property>
-      <property name="modulePath">target/wildfly-10.0.0.Final/modules</property>
+      <property name="jbossHome">target/wildfly-10.1.0.Final/</property>
+      <property name="modulePath">target/wildfly-10.1.0.Final/modules</property>
       <property name="outputToConsole">true</property>
+    </configuration>
+  </container>
+  <container qualifier="glassfish-embedded">
+    <configuration>
     </configuration>
   </container>
   <extension qualifier="suite">

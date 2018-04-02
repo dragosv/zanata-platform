@@ -133,6 +133,7 @@
             <usedDependency>${jdbc.groupId}:${jdbc.artifactId}</usedDependency>
             <!-- used for arquillian tests -->
             <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
+            <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>
             <!-- NB: Don't add anything without a comment explaining how the
                  dependency is used -->
           </usedDependencies>
@@ -682,6 +683,15 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <!-- NB this is a container qualifier in arquillian.xml -->
+                <arquillian.launch>wildfly-embedded</arquillian.launch>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -956,11 +966,11 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.wildfly.arquillian</groupId>
-      <artifactId>wildfly-arquillian-container-embedded</artifactId>
-      <version>${wildfly.arquillian.version}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.wildfly.arquillian</groupId>-->
+      <!--<artifactId>wildfly-arquillian-container-embedded</artifactId>-->
+      <!--<version>${wildfly.arquillian.version}</version>-->
+    <!--</dependency>-->
 
     <!-- Useful for debugging with WildFly -->
     <!--<dependency>-->

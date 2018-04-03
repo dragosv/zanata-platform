@@ -249,7 +249,7 @@ public interface FileResource {
      */
     @GET
     @Path(FILE_DOWNLOAD_TEMPLATE)
-    // /file/translation/{projectSlug}/{iterationSlug}/{locale}/{fileType}?docId={docId}
+    // /file/translation/{projectSlug}/{iterationSlug}/{locale}/{fileType}?docId={docId}&minContentState={minContentState}
             public
             Response downloadTranslationFile(
                     @PathParam("projectSlug") String projectSlug,

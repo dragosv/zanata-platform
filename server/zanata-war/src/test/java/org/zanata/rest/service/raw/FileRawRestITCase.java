@@ -124,6 +124,38 @@ public class FileRawRestITCase extends RestTest {
 
     @Test
     @RunAsClient
+    public void getBakedWithMinContentState() throws Exception {
+        new ResourceRequest(
+                getRestEndpointUrl("/file/translation/sample-project/1.0/en-US/baked"),
+                "GET", getAuthorizedEnvironment()) {
+            @Override
+            protected Invocation.Builder prepareRequest(
+                    ResteasyWebTarget webTarget) {
+                return webTarget.queryParam("docId", "my/path/document.txt")
+                                .queryParam("minContentState", "Accepted")
+                        .request();
+            }
+
+            @Override
+            protected void onResponse(Response response) {
+                // Ok
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertHeaderValue(response, "Content-Disposition",
+                        "attachment; filename=\"document.txt\"");
+                assertHeaderValue(response, HttpHeaders.CONTENT_TYPE,
+                        MediaType.TEXT_PLAIN);
+
+                String entityString = response.readEntity(String.class);
+
+                assertPoFileCorrect(entityString);
+                assertPoFileContainsTranslations(entityString, "hello world",
+                        "");
+            }
+        }.run();
+    }
+
+    @Test
+    @RunAsClient
     public void getPo2() throws Exception {
         new ResourceRequest(
                 getRestEndpointUrl("/file/translation/sample-project/1.0/en-US/po"),

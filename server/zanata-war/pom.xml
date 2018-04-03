@@ -70,6 +70,18 @@
 
     <plugins>
       <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>missinglink-maven-plugin</artifactId>
+        <version>0.1.1</version>
+        <executions>
+          <execution>
+            <goals><goal>check</goal></goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <!-- if including source jars, use the no-fork goals
              otherwise both the Groovy sources and Java stub sources will get included in your jar -->
         <groupId>org.apache.maven.plugins</groupId>
@@ -647,7 +659,7 @@
         <dependency>
           <groupId>org.wildfly.arquillian</groupId>
           <artifactId>wildfly-arquillian-container-embedded</artifactId>
-          <version>2.0.0.Final</version>
+          <version>${wildfly.arquillian.version}</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -777,6 +789,12 @@
   </profiles>
 
   <dependencies>
+    <dependency>
+      <groupId>com.spotify</groupId>
+      <artifactId>missinglink-maven-plugin</artifactId>
+      <version>0.1.1</version>
+    </dependency>
+
     <dependency>
       <groupId>io.javaslang</groupId>
       <artifactId>javaslang</artifactId>

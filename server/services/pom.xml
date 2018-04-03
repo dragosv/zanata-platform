@@ -126,6 +126,7 @@
             <usedDependency>${jdbc.groupId}:${jdbc.artifactId}</usedDependency>
             <!-- used for arquillian tests -->
             <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
+            <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>
             <!-- NB: Don't add anything without a comment explaining how the
                  dependency is used -->
           </usedDependencies>
@@ -505,7 +506,7 @@
     <dependency>
       <groupId>org.wildfly.arquillian</groupId>
       <artifactId>wildfly-arquillian-container-embedded</artifactId>
-      <version>2.0.0.Final</version>
+      <version>${wildfly.arquillian.version}</version>
       <scope>test</scope>
     </dependency>
 

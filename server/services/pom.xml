@@ -125,8 +125,8 @@
             <!-- Need for test scope -->
             <usedDependency>${jdbc.groupId}:${jdbc.artifactId}</usedDependency>
             <!-- used for arquillian tests -->
-            <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
-            <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>
+            <!--<usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>-->
+            <!--<usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>-->
             <!-- NB: Don't add anything without a comment explaining how the
                  dependency is used -->
           </usedDependencies>
@@ -494,20 +494,6 @@
       <groupId>org.jboss.weld.se</groupId>
       <artifactId>weld-se-core</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.wildfly.arquillian</groupId>
-      <artifactId>wildfly-arquillian-container-managed</artifactId>
-      <version>${wildfly.arquillian.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.wildfly.arquillian</groupId>
-      <artifactId>wildfly-arquillian-container-embedded</artifactId>
-      <version>${wildfly.arquillian.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -1633,8 +1619,27 @@
           <value>jbosseap6</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-managed</artifactId>
+          <version>${wildfly.arquillian.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <configuration>
+              <usedDependencies combine.children="append">
+                <!-- used for arquillian tests -->
+                <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
+              </usedDependencies>
+            </configuration>
+          </plugin>
+
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
@@ -1657,14 +1662,78 @@
           <value>wildfly8</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-managed</artifactId>
+          <version>${wildfly.arquillian.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <configuration>
+              <usedDependencies combine.children="append">
+                <!-- used for arquillian tests -->
+                <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
+              </usedDependencies>
+            </configuration>
+          </plugin>
+
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
               <systemPropertyVariables>
                 <!-- NB this is a container qualifier in arquillian.xml -->
                 <arquillian.launch>wildfly</arquillian.launch>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>wildfly-embedded</id>
+      <activation>
+        <property>
+          <name>appserver</name>
+          <value>wildfly-embedded</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-embedded</artifactId>
+          <version>${wildfly.arquillian.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+        </testResources>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <configuration>
+              <usedDependencies combine.children="append">
+                <!-- used for arquillian tests -->
+                <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>
+              </usedDependencies>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <!-- NB this is a container qualifier in arquillian.xml -->
+                <arquillian.launch>wildfly-embedded</arquillian.launch>
               </systemPropertyVariables>
             </configuration>
           </plugin>

@@ -70,18 +70,6 @@
 
     <plugins>
       <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>missinglink-maven-plugin</artifactId>
-        <version>0.1.1</version>
-        <executions>
-          <execution>
-            <goals><goal>check</goal></goals>
-            <phase>process-classes</phase>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <!-- if including source jars, use the no-fork goals
              otherwise both the Groovy sources and Java stub sources will get included in your jar -->
         <groupId>org.apache.maven.plugins</groupId>
@@ -144,8 +132,8 @@
             <!-- Need for test scope -->
             <usedDependency>${jdbc.groupId}:${jdbc.artifactId}</usedDependency>
             <!-- used for arquillian tests -->
-            <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
-            <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>
+            <!--<usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>-->
+            <!--<usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>-->
             <!-- NB: Don't add anything without a comment explaining how the
                  dependency is used -->
           </usedDependencies>
@@ -608,8 +596,26 @@
           <value>jbosseap6</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-managed</artifactId>
+          <version>${wildfly.arquillian.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <configuration>
+              <usedDependencies combine.children="append">
+                <!-- used for arquillian tests -->
+                <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
+              </usedDependencies>
+            </configuration>
+          </plugin>
+
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
@@ -619,7 +625,6 @@
               </systemPropertyVariables>
             </configuration>
           </plugin>
-
         </plugins>
       </build>
     </profile>
@@ -632,8 +637,25 @@
           <value>wildfly8</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-managed</artifactId>
+          <version>${wildfly.arquillian.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <configuration>
+              <usedDependencies combine.children="append">
+                <!-- used for arquillian tests -->
+                <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-managed</usedDependency>
+              </usedDependencies>
+            </configuration>
+          </plugin>
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
@@ -671,30 +693,15 @@
         </testResources>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.wildfly</groupId>
-                      <artifactId>wildfly-dist</artifactId>
-                      <version>10.1.0.Final</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
+            <configuration>
+              <usedDependencies combine.children="append">
+                <!-- used for arquillian tests -->
+                <usedDependency>org.wildfly.arquillian:wildfly-arquillian-container-embedded</usedDependency>
+              </usedDependencies>
+            </configuration>
           </plugin>
+
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
@@ -789,12 +796,6 @@
   </profiles>
 
   <dependencies>
-    <dependency>
-      <groupId>com.spotify</groupId>
-      <artifactId>missinglink-maven-plugin</artifactId>
-      <version>0.1.1</version>
-    </dependency>
-
     <dependency>
       <groupId>io.javaslang</groupId>
       <artifactId>javaslang</artifactId>
@@ -976,19 +977,6 @@
       <artifactId>weld-spi</artifactId>
       <scope>provided</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.wildfly.arquillian</groupId>
-      <artifactId>wildfly-arquillian-container-managed</artifactId>
-      <version>${wildfly.arquillian.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!--<dependency>-->
-      <!--<groupId>org.wildfly.arquillian</groupId>-->
-      <!--<artifactId>wildfly-arquillian-container-embedded</artifactId>-->
-      <!--<version>${wildfly.arquillian.version}</version>-->
-    <!--</dependency>-->
 
     <!-- Useful for debugging with WildFly -->
     <!--<dependency>-->

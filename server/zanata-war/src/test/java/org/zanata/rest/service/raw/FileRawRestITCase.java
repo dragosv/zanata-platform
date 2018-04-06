@@ -20,29 +20,46 @@
  */
 package org.zanata.rest.service.raw;
 
-import java.io.StringReader;
+import java.io.*;
+import java.lang.annotation.Annotation;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.common.base.Optional;
+import org.apache.commons.codec.binary.Hex;
 import org.dbunit.operation.DatabaseOperation;
 import org.fedorahosted.tennera.jgettext.Message;
 import org.fedorahosted.tennera.jgettext.catalog.parse.MessageStreamParser;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 import org.junit.Test;
 import org.zanata.RestTest;
+import org.zanata.common.LocaleId;
+import org.zanata.rest.DocumentFileUploadForm;
 import org.zanata.rest.ResourceRequest;
+import org.zanata.rest.dto.ChunkUploadResponse;
+import org.zanata.rest.dto.resource.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.zanata.provider.DBUnitProvider.DataSetOperation;
 import static org.zanata.util.RawRestTestUtils.assertHeaderValue;
 
 public class FileRawRestITCase extends RestTest {
+
+    private final Annotation[] multipartFormAnnotations =
+            { new MultipartFormLiteral() };
 
     @Override
     protected void prepareDBUnitOperations() {
@@ -91,16 +108,80 @@ public class FileRawRestITCase extends RestTest {
         }.run();
     }
 
+    private DocumentFileUploadForm generateUploadForm(boolean isFirst,
+                                                      boolean isLast, String fileType, String md5hash, long streamSize,
+                                                      InputStream fileStream) {
+        DocumentFileUploadForm uploadForm = new DocumentFileUploadForm();
+        uploadForm.setFirst(isFirst);
+        uploadForm.setLast(isLast);
+        uploadForm.setFileType(fileType);
+        uploadForm.setHash(md5hash);
+        uploadForm.setSize(streamSize);
+        uploadForm.setFileStream(fileStream);
+        return uploadForm;
+    }
+
     @Test
     @RunAsClient
     public void getBaked() throws Exception {
+        //file/source/{projectSlug}/{iterationSlug}?docId={docId}
+        new ResourceRequest(
+                getRestEndpointUrl("/file/source/sample-project/1.0"),
+                "POST", getAuthorizedEnvironment()) {
+            @Override
+            protected Invocation.Builder prepareRequest(
+                    ResteasyWebTarget webTarget) {
+                return webTarget.queryParam("docId", "test-gettext.pot")
+                        .request(MediaType.APPLICATION_XML_TYPE);
+            }
+
+            @Override
+            public void invoke(Invocation.Builder builder) throws Exception {
+                MultipartFormDataOutput mdo = new MultipartFormDataOutput();
+                File file = new File("src/test/resources/org/zanata/test-gettext.pot");
+                final FileInputStream fileInputStream = new FileInputStream(file);
+
+                String hash = calculateFileHash(file);
+
+//                mdo.addFormData("file", fileInputStream, MediaType.APPLICATION_OCTET_STREAM_TYPE);
+//                mdo.addFormData("type", "PO", MediaType.TEXT_PLAIN_TYPE);
+//                mdo.addFormData("first", "true", MediaType.TEXT_PLAIN_TYPE);
+//                mdo.addFormData("last", "true", MediaType.TEXT_PLAIN_TYPE);
+//                mdo.addFormData("size", file.length(), MediaType.TEXT_PLAIN_TYPE);
+//                mdo.addFormData("hash", hash, MediaType.TEXT_PLAIN_TYPE);
+//
+//                GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(mdo) {};
+//
+//                Response response = builder.buildPost(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA_TYPE)).invoke();
+
+                DocumentFileUploadForm fileUploadForm = generateUploadForm(true, true, "PO", hash, file.length(), fileInputStream);
+
+                Response response = builder.post(Entity.entity(fileUploadForm,
+                        MediaType.MULTIPART_FORM_DATA_TYPE, multipartFormAnnotations));
+
+                try {
+                    onResponse(response);
+                } finally {
+                    response.close();
+                }
+            }
+
+            @Override
+            protected void onResponse(Response response) {
+                ChunkUploadResponse chunkUploadResponse = response.readEntity(ChunkUploadResponse.class);
+
+                // Ok
+                assertThat(response.getStatus()).isEqualTo(200);
+            }
+        }.run();
+
         new ResourceRequest(
                 getRestEndpointUrl("/file/translation/sample-project/1.0/en-US/baked"),
                 "GET", getAuthorizedEnvironment()) {
             @Override
             protected Invocation.Builder prepareRequest(
                     ResteasyWebTarget webTarget) {
-                return webTarget.queryParam("docId", "my/path/document.txt")
+                return webTarget.queryParam("docId", "test-gettext.pot")
                         .request();
             }
 
@@ -109,7 +190,7 @@ public class FileRawRestITCase extends RestTest {
                 // Ok
                 assertThat(response.getStatus()).isEqualTo(200);
                 assertHeaderValue(response, "Content-Disposition",
-                        "attachment; filename=\"document.txt\"");
+                        "attachment; filename=\"test-gettext.pot\"");
                 assertHeaderValue(response, HttpHeaders.CONTENT_TYPE,
                         MediaType.TEXT_PLAIN);
 
@@ -120,6 +201,28 @@ public class FileRawRestITCase extends RestTest {
                         "");
             }
         }.run();
+    }
+
+    private String calculateFileHash(File srcFile) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            InputStream fileStream = new FileInputStream(srcFile);
+            try {
+                fileStream = new DigestInputStream(fileStream, md);
+                byte[] buffer = new byte[256];
+                //noinspection StatementWithEmptyBody
+                while (fileStream.read(buffer) > 0) {
+                    // just keep digesting the input
+                }
+            } finally {
+                fileStream.close();
+            }
+            //noinspection UnnecessaryLocalVariable
+            String md5hash = new String(Hex.encodeHex(md.digest()));
+            return md5hash;
+        } catch (NoSuchAlgorithmException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -268,4 +371,14 @@ public class FileRawRestITCase extends RestTest {
             throw new AssertionError(assertionError.toString());
         }
     }
+
+    @SuppressWarnings("all")
+    private static class MultipartFormLiteral implements MultipartForm {
+
+        @Override
+        public java.lang.Class<? extends Annotation> annotationType() {
+            return MultipartForm.class;
+        }
+    }
+
 }

@@ -1,0 +1,26 @@
+rootProject.name = 'server'
+include ':zanata-liquibase'
+include ':zanata-model'
+include ':zanata-model-test'
+include ':zanata-war'
+include ':zanata-test-war'
+include ':functional-test'
+include ':gwt-shared'
+include ':gwt-test'
+include ':gwt-editor'
+include ':security-common'
+include ':services'
+include ':zanata-frontend'
+
+project(':zanata-liquibase').projectDir = "$rootDir/zanata-liquibase" as File
+project(':zanata-model').projectDir = "$rootDir/zanata-model" as File
+project(':zanata-model-test').projectDir = "$rootDir/zanata-model-test" as File
+project(':zanata-war').projectDir = "$rootDir/zanata-war" as File
+project(':zanata-test-war').projectDir = "$rootDir/zanata-test-war" as File
+project(':functional-test').projectDir = "$rootDir/functional-test" as File
+project(':gwt-shared').projectDir = "$rootDir/gwt-shared" as File
+project(':gwt-test').projectDir = "$rootDir/gwt-test" as File
+project(':gwt-editor').projectDir = "$rootDir/gwt-editor" as File
+project(':security-common').projectDir = "$rootDir/security-common" as File
+project(':services').projectDir = "$rootDir/services" as File
+project(':zanata-frontend').projectDir = "$rootDir/zanata-frontend" as File

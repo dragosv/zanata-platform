@@ -1,0 +1,144 @@
+
+description = 'functional-test'
+dependencies {
+    compile(group: 'net.lightbody.bmp', name: 'browsermob-core', version:'2.1.5') {
+exclude(module: 'jsr305')
+exclude(module: 'jsr250-api')
+    }
+    compile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.8.9'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.8.9'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.8.9'
+    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version:'1.58'
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version:'1.58'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version:'3.8.1'
+    compile(group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version:'3.8.1') {
+exclude(module: 'commons-logging')
+    }
+    compile(group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version:'3.8.1') {
+exclude(module: 'commons-logging')
+    }
+    compile(group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version:'3.8.1') {
+exclude(module: 'commons-logging')
+    }
+    compile(group: 'org.seleniumhq.selenium', name: 'selenium-support', version:'3.8.1') {
+exclude(module: 'commons-logging')
+    }
+    compile group: 'com.google.guava', name: 'guava', version:'23.5-jre'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.6'
+    compile group: 'io.github.microutils', name: 'kotlin-logging', version:'1.4.1'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version:'1.2.30'
+    compile group: 'commons-io', name: 'commons-io', version:'2.4'
+    compile(group: 'org.zanata', name: 'zanata-common-api', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'jaxrs-api')
+exclude(module: 'resteasy-jaxrs')
+exclude(module: 'resteasy-jaxb-provider')
+    }
+    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version:'1.9.13'
+    compile(group: 'org.apache.httpcomponents', name: 'httpclient', version:'4.5.3') {
+exclude(module: 'commons-logging')
+    }
+    compile(group: 'org.zanata', name: 'zanata-common-util', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'xom')
+    }
+    compile(group: 'org.zanata', name: 'zanata-adapter-po', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'jaxb-api')
+    }
+    compile group: 'org.jboss.spec.javax.xml.bind', name: 'jboss-jaxb-api_2.2_spec', version:'1.0.4.Final'
+    compile group: 'org.fedorahosted.openprops', name: 'openprops', version:'0.7.1'
+    compile group: 'joda-time', name: 'joda-time', version:'2.8.1'
+  testCompile project(':zanata-model')
+  testCompile project(':services')
+    testCompile group: 'org.glassfish', name: 'javax.el', version:'3.0.1-b08'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile(group: 'org.subethamail', name: 'subethasmtp', version:'3.1.7') {
+exclude(module: 'jsr305')
+exclude(module: 'commons-logging')
+exclude(module: 'mail')
+    }
+    testCompile group: 'com.sun.mail', name: 'javax.mail', version:'1.5.5'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version:'1.2.30'
+    testCompile group: 'mysql', name: 'mysql-connector-java', version:'5.1.26'
+    testCompile(group: 'org.zanata', name: 'zanata-rest-client', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'httpclient')
+exclude(module: 'jboss-jaxrs-api_2.0_spec')
+exclude(module: 'jboss-annotations-api_1.2_spec')
+    }
+    testCompile group: 'javax.validation', name: 'validation-api', version:'1.1.0.Final'
+    testCompile(group: 'org.wildfly.core', name: 'wildfly-controller-client', version:'2.0.10.Final') {
+exclude(module: 'jaxb-api')
+    }
+    testCompile(group: 'org.jboss', name: 'jboss-remote-naming', version:'2.0.4.Final') {
+exclude(module: 'jboss-remoting')
+    }
+    testCompile(group: 'com.jayway.awaitility', name: 'awaitility', version:'1.6.3') {
+exclude(module: 'cglib-nodep')
+exclude(module: 'objenesis')
+    }
+    testCompile group: 'org.jboss.resteasy', name: 'jaxrs-api', version:'3.0.12.Final'
+    testCompile group: 'org.jboss.resteasy', name: 'resteasy-client', version:'3.0.19.Final'
+    testCompile group: 'cglib', name: 'cglib-nodep', version:'3.2.4'
+    testCompile group: 'org.objenesis', name: 'objenesis', version:'2.5'
+  providedCompile project(':zanata-test-war')
+    compile(group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version:'1.0.0.Final') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'org.hibernate', name: 'hibernate-core', version:'5.0.7.Final') {
+exclude(module: 'geronimo-jta_1.1_spec')
+exclude(module: 'jboss-logging')
+exclude(module: 'xml-apis')
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'org.hibernate', name: 'hibernate-entitymanager', version:'5.0.7.Final') {
+exclude(module: 'javassist')
+exclude(module: 'geronimo-jta_1.1_spec')
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'org.jboss.spec.javax.transaction', name: 'jboss-transaction-api_1.2_spec', version:'1.0.0.Final') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'javax.enterprise', name: 'cdi-api', version:'1.2') {
+exclude(module: 'jsr250-api')
+exclude(module: 'el-api')
+exclude(module: 'javax.el-api')
+exclude(module: 'javax.interceptor-api')
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'com.google.code.findbugs', name: 'findbugs-annotations', version:'3.0.1') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'com.google.code.findbugs', name: 'jsr305', version:'3.0.2') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'net.jcip', name: 'jcip-annotations', version:'1.0') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+    compile(group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.12') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+}
+
+task packageTests(type: Jar) {
+  from sourceSets.test.output
+  classifier = 'tests'
+}
+artifacts.archives packageTests

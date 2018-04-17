@@ -1,0 +1,350 @@
+
+apply plugin: 'war'
+
+jar.enabled = true
+description = 'Zanata web application'
+dependencies {
+    compile group: 'io.javaslang', name: 'javaslang', version:'2.0.6'
+    compile(group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3') {
+exclude(module: 'commons-logging')
+    }
+    compile group: 'org.apache.velocity', name: 'velocity', version:'1.7'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version:'1.2.30'
+    compile(group: 'org.zanata', name: 'zanata-common-api', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'servlet-api')
+    }
+  compile project(':zanata-frontend')
+    compile(group: 'org.zanata', name: 'zanata-common-util', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'xom')
+    }
+  compile project(':zanata-liquibase')
+  compile project(':zanata-model')
+    compile(group: 'org.zanata', name: 'zanata-adapter-po', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'jaxb-api')
+    }
+    compile group: 'org.zanata', name: 'zanata-adapter-glossary', version:'4.5.0-SNAPSHOT'
+    compile(group: 'org.zanata', name: 'zanata-adapter-properties', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'jaxb-api')
+    }
+    compile(group: 'org.zanata', name: 'zanata-adapter-xliff', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'jsr173_api')
+exclude(module: 'jaxb-impl')
+    }
+  compile project(':security-common')
+  compile project(':services')
+  compile project(':gwt-shared')
+    compile group: 'org.json', name: 'json', version:'20140107'
+    compile group: 'commons-collections', name: 'commons-collections', version:'3.2.2'
+    compile(group: 'org.jboss.resteasy', name: 'resteasy-cdi', version:'3.0.19.Final') {
+exclude(module: 'jboss-jaxrs-api_2.0_spec')
+exclude(module: 'validation-api')
+    }
+    compile(group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version:'3.0.19.Final') {
+exclude(module: 'javassist')
+exclude(module: 'jsr250-api')
+exclude(module: 'jcip-annotations')
+exclude(module: 'jboss-annotations-api_1.2_spec')
+exclude(module: 'jboss-jaxrs-api_2.0_spec')
+    }
+    compile(group: 'org.jboss.resteasy', name: 'resteasy-jaxb-provider', version:'3.0.19.Final') {
+exclude(module: 'jaxb-api')
+exclude(module: 'jaxb-impl')
+    }
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jackson-provider', version:'3.0.19.Final'
+    compile(group: 'org.jboss.resteasy', name: 'resteasy-multipart-provider', version:'3.0.19.Final') {
+exclude(module: 'commons-logging')
+exclude(module: 'servlet-api')
+exclude(module: 'jboss-logging')
+exclude(module: 'resteasy-jaxrs')
+    }
+    compile(group: 'org.jboss.resteasy', name: 'resteasy-servlet-initializer', version:'3.0.19.Final') {
+exclude(module: 'jboss-jaxrs-api_2.0_spec')
+    }
+    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version:'1.9.13'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version:'1.9.13'
+    compile group: 'org.codehaus.jackson', name: 'jackson-xc', version:'1.9.13'
+    compile group: 'antlr', name: 'antlr', version:'2.7.7'
+    compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version:'r239'
+    compile(group: 'org.richfaces', name: 'richfaces', version:'4.5.17.Final') {
+exclude(module: 'jboss-el-api_3.0_spec')
+    }
+    compile group: 'org.omnifaces', name: 'omnifaces', version:'2.6.4'
+    compile group: 'net.htmlparser.jericho', name: 'jericho-html', version:'3.4'
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-dtd', version:'0.29') {
+exclude(module: 'build-log4j')
+exclude(module: 'slf4j-simple')
+    }
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-html', version:'0.29') {
+exclude(module: 'build-log4j')
+exclude(module: 'slf4j-simple')
+    }
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-json', version:'0.29') {
+exclude(module: 'build-log4j')
+exclude(module: 'slf4j-simple')
+    }
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-idml', version:'0.29') {
+exclude(module: 'build-log4j')
+exclude(module: 'slf4j-simple')
+    }
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-openoffice', version:'0.29') {
+exclude(module: 'build-log4j')
+exclude(module: 'slf4j-simple')
+    }
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-plaintext', version:'0.29') {
+exclude(module: 'build-log4j')
+exclude(module: 'slf4j-simple')
+    }
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-regex', version:'0.29') {
+exclude(module: 'build-log4j')
+exclude(module: 'slf4j-simple')
+    }
+    compile(group: 'net.sf.okapi.filters', name: 'okapi-filter-ts', version:'0.29') {
+exclude(module: 'woodstox-core-lgpl')
+    }
+    compile(group: 'net.sf.okapi', name: 'okapi-core', version:'0.29') {
+exclude(module: 'slf4j-simple')
+    }
+    compile group: 'org.ocpsoft.rewrite', name: 'rewrite-servlet', version:'3.4.2.Final'
+    compile group: 'org.ocpsoft.logging', name: 'logging-adapter-jboss', version:'1.0.3.Final'
+    compile group: 'com.ibm.icu', name: 'icu4j', version:'56.1'
+    compile group: 'commons-lang', name: 'commons-lang', version:'2.6'
+    compile group: 'net.sourceforge.openutils', name: 'openutils-log4j', version:'2.0.5'
+    compile group: 'com.google.guava', name: 'guava', version:'23.5-jre'
+    compile group: 'net.bull.javamelody', name: 'javamelody-core', version:'1.62.0'
+    compile group: 'org.fedorahosted.openprops', name: 'openprops', version:'0.7.1'
+    compile group: 'org.apache.lucene', name: 'lucene-core', version:'5.3.1'
+    compile group: 'org.apache.lucene', name: 'lucene-queryparser', version:'5.3.1'
+    compile(group: 'org.apache.maven', name: 'maven-artifact', version:'3.3.9') {
+exclude(module: 'plexus-utils')
+    }
+    compile(group: 'org.apache.solr', name: 'solr-core', version:'5.3.1') {
+exclude(module: '*')
+exclude(module: '*')
+exclude(module: 'org.restlet')
+exclude(module: 'org.restlet.ext.servlet')
+exclude(module: 'commons-httpclient')
+exclude(module: 'commons-logging')
+exclude(module: 'javax.servlet-api')
+exclude(module: 'servlet-api')
+exclude(module: 'stax-utils')
+exclude(module: 'commons-io')
+exclude(module: 'geronimo-stax-api_1.0_spec')
+exclude(module: '*')
+exclude(module: 'solr-lucene-analyzers')
+exclude(module: 'solr-lucene-core')
+exclude(module: 'solr-solrj')
+exclude(module: 'servlet-api')
+exclude(module: 'wstx-asl')
+    }
+    compile(group: 'org.apache.solr', name: 'solr-solrj', version:'5.3.1') {
+exclude(module: 'commons-httpclient')
+exclude(module: 'wstx-asl')
+    }
+    compile(group: 'org.hibernate', name: 'hibernate-search-orm', version:'5.5.1.Final') {
+exclude(module: 'hibernate-commons-annotations')
+exclude(module: 'ejb3-persistence')
+    }
+    compile(group: 'org.hibernate', name: 'hibernate-search-engine', version:'5.5.1.Final') {
+exclude(module: 'jboss-logging')
+    }
+    compile group: 'commons-codec', name: 'commons-codec', version:'1.10'
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.12'
+    compile group: 'commons-fileupload', name: 'commons-fileupload', version:'1.3.3'
+    compile group: 'com.google.inject', name: 'guice', version:'3.0'
+    compile group: 'org.liquibase', name: 'liquibase-core', version:'3.4.2'
+    compile group: 'com.mattbertolini', name: 'liquibase-slf4j', version:'2.0.0'
+    compile group: 'org.apache.commons', name: 'commons-exec', version:'1.3'
+    compile group: 'org.apache.deltaspike.core', name: 'deltaspike-core-api', version:'1.7.0'
+    compile group: 'org.apache.deltaspike.modules', name: 'deltaspike-servlet-module-api', version:'1.7.0'
+    compile group: 'org.apache.deltaspike.modules', name: 'deltaspike-proxy-module-api', version:'1.7.0'
+    compile group: 'org.apache.deltaspike.modules', name: 'deltaspike-jsf-module-api', version:'1.7.0'
+    compile group: 'org.apache.deltaspike.modules', name: 'deltaspike-security-module-api', version:'1.7.0'
+    compile group: 'org.apache.deltaspike.modules', name: 'deltaspike-jpa-module-api', version:'1.7.0'
+    compile group: 'org.apache.deltaspike.cdictrl', name: 'deltaspike-cdictrl-api', version:'1.7.0'
+    compile group: 'org.apache.deltaspike.modules', name: 'deltaspike-scheduler-module-api', version:'1.7.0'
+    compile group: 'org.apache.oltu.oauth2', name: 'org.apache.oltu.oauth2.authzserver', version:'1.0.1'
+    compile group: 'org.apache.oltu.oauth2', name: 'org.apache.oltu.oauth2.resourceserver', version:'1.0.1'
+    compile group: 'org.quartz-scheduler', name: 'quartz', version:'2.2.1'
+    compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version:'3.0.2.Final'
+    compile group: 'org.apache.httpcomponents', name: 'httpcore', version:'4.4.1'
+    compile(group: 'org.apache.httpcomponents', name: 'httpclient', version:'4.4.1') {
+exclude(module: 'commons-logging')
+    }
+    compile(group: 'org.openid4java', name: 'openid4java', version:'1.0.0') {
+exclude(module: 'xml-apis')
+exclude(module: 'commons-logging')
+    }
+    compile group: 'org.webjars.bower', name: 'commonmark', version:'0.20.0'
+    compile group: 'org.webjars.bower', name: 'google-caja', version:'5669.0.0'
+    compile(group: 'se.jiderhamn', name: 'classloader-leak-prevention', version:'1.15.1') {
+exclude(module: 'servlet-api')
+exclude(module: 'cxf-rt-transports-http')
+    }
+    compile group: 'org.fedorahosted.tennera', name: 'jgettext', version:'0.15'
+    compile group: 'joda-time', name: 'joda-time', version:'2.8.1'
+    compile group: 'commons-io', name: 'commons-io', version:'2.4'
+    compile group: 'org.jboss.resteasy', name: 'jaxrs-api', version:'3.0.12.Final'
+    compile group: 'xmlunit', name: 'xmlunit', version:'1.4'
+    compile(group: 'com.io7m.xom', name: 'xom', version:'1.2.10') {
+exclude(module: 'xalan')
+    }
+  compile project(':gwt-editor')
+    compile group: 'org.fusesource.restygwt', name: 'restygwt', version:'2.2.0'
+    compile group: 'net.customware.gwt.dispatch', name: 'gwt-dispatch', version:'1.0.0'
+    compile group: 'io.github.microutils', name: 'kotlin-logging', version:'1.4.1'
+    runtime group: 'org.apache.deltaspike.modules', name: 'deltaspike-bean-validation-module-impl', version:'1.7.0'
+    runtime(group: 'com.lowagie', name: 'itext', version:'2.1.7') {
+exclude(module: 'bctsp-jdk14')
+    }
+    runtime group: 'org.apache.deltaspike.core', name: 'deltaspike-core-impl', version:'1.7.0'
+    runtime group: 'org.apache.deltaspike.cdictrl', name: 'deltaspike-cdictrl-weld', version:'1.7.0'
+    runtime group: 'org.apache.deltaspike.modules', name: 'deltaspike-scheduler-module-impl', version:'1.7.0'
+    testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version:'1.10.2'
+    testCompile(group: 'com.jayway.awaitility', name: 'awaitility', version:'1.6.3') {
+exclude(module: 'cglib-nodep')
+exclude(module: 'objenesis')
+    }
+    testCompile group: 'net.jodah', name: 'concurrentunit', version:'0.4.1'
+    testCompile group: 'net.wuerl.kotlin', name: 'assertj-core-kotlin', version:'0.2.1'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version:'1.2.30'
+    testCompile(group: 'org.jglue.cdi-unit', name: 'cdi-unit', version:'4.0.0') {
+exclude(module: 'weld-se-core')
+exclude(module: 'annotations')
+    }
+    testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+  testCompile project(':zanata-model-test')
+    testCompile(group: 'org.zanata', name: 'zanata-common-api', version:'3.9.1', classifier:'compat') {
+exclude(module: 'jsr250-api')
+exclude(module: 'servlet-api')
+exclude(module: 'jaxb-api')
+exclude(module: 'jboss-jaxrs-api_2.0_spec')
+    }
+    testCompile group: 'org.wildfly.arquillian', name: 'wildfly-arquillian-container-managed', version:'2.0.0.Final'
+    testCompile(group: 'org.jvnet.mock-javamail', name: 'mock-javamail', version:'1.9') {
+exclude(module: 'mail')
+    }
+    testCompile(group: 'org.hibernate', name: 'hibernate-testing', version:'5.0.7.Final') {
+exclude(module: 'tools')
+exclude(module: 'geronimo-jta_1.1_spec')
+    }
+    testCompile(group: 'com.github.huangp', name: 'entityunit', version:'0.3') {
+exclude(module: 'validation-api')
+exclude(module: 'commons-beanutils')
+exclude(module: 'hibernate-core')
+exclude(module: 'hibernate-jpa-2.0-api')
+    }
+    testCompile group: 'com.googlecode.log4jdbc', name: 'log4jdbc', version:'1.2'
+    testCompile group: 'org.dbunit', name: 'dbunit', version:'2.4.9'
+    testCompile group: 'org.jboss.marshalling', name: 'jboss-marshalling', version:'1.4.10.Final'
+    testCompile group: 'org.jboss.marshalling', name: 'jboss-marshalling-river', version:'1.4.10.Final'
+    testCompile group: 'org.jboss.shrinkwrap', name: 'shrinkwrap-api', version:'1.2.6'
+    testCompile group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-api-maven', version:'2.2.4'
+    testCompile group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-api', version:'2.2.4'
+    testCompile group: 'org.jboss.arquillian.config', name: 'arquillian-config-api', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.container', name: 'arquillian-container-test-api', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.container', name: 'arquillian-container-test-impl-base', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.container', name: 'arquillian-container-spi', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.core', name: 'arquillian-core-spi', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.core', name: 'arquillian-core-api', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-core', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.test', name: 'arquillian-test-api', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.arquillian.test', name: 'arquillian-test-spi', version:'1.1.13.Final'
+    testCompile group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-impl-maven', version:'2.2.4'
+    testCompile group: 'org.jboss.arquillian.protocol', name: 'arquillian-protocol-servlet', version:'1.1.13.Final'
+    testCompile group: 'mysql', name: 'mysql-connector-java', version:'5.1.26'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version:'2.3'
+    testCompile(group: 'org.concordion', name: 'concordion', version:'1.4.2') {
+exclude(module: 'junit-dep')
+exclude(module: 'xml-apis')
+exclude(module: 'xom')
+    }
+    testCompile group: 'org.mockito', name: 'mockito-core', version:'2.8.9'
+    testCompile group: 'com.nhaarman', name: 'mockito-kotlin-kt1.1', version:'1.5.0'
+    testCompile group: 'com.jamonapi', name: 'jamon', version:'2.75'
+    testCompile(group: 'org.scannotation', name: 'scannotation', version:'1.0.3') {
+exclude(module: 'javassist')
+    }
+    testCompile(group: 'com.google.gwt.gwtmockito', name: 'gwtmockito', version:'1.1.2') {
+exclude(module: 'gwt-dev')
+exclude(module: 'mockito-all')
+    }
+  testCompile project(':gwt-test')
+    providedCompile(group: 'org.jboss.weld.se', name: 'weld-se-core', version:'2.3.2.Final') {
+exclude(module: 'jsr250-api')
+exclude(module: 'el-api')
+exclude(module: 'jboss-annotations-api_1.2_spec')
+    }
+    providedCompile group: 'org.jboss.weld', name: 'weld-spi', version:'2.3.Final'
+    providedCompile group: 'org.jboss.spec.javax.faces', name: 'jboss-jsf-api_2.2_spec', version:'2.2.11'
+    providedCompile group: 'org.jboss.spec.javax.transaction', name: 'jboss-transaction-api_1.2_spec', version:'1.0.0.Final'
+    providedCompile group: 'com.sun.faces', name: 'jsf-impl', version:'2.2.12'
+    providedCompile(group: 'org.hibernate', name: 'hibernate-core', version:'5.0.7.Final') {
+exclude(module: 'geronimo-jta_1.1_spec')
+exclude(module: 'jboss-logging')
+exclude(module: 'xml-apis')
+    }
+    providedCompile(group: 'org.hibernate', name: 'hibernate-validator', version:'5.2.4.Final') {
+exclude(module: 'jboss-logging')
+exclude(module: 'validation-api')
+    }
+    providedCompile group: 'org.hibernate', name: 'hibernate-validator-cdi', version:'5.2.4.Final'
+    providedCompile(group: 'org.hibernate', name: 'hibernate-entitymanager', version:'5.0.7.Final') {
+exclude(module: 'ejb3-persistence')
+exclude(module: 'jboss-logging')
+    }
+    providedCompile group: 'com.google.code.findbugs', name: 'findbugs-annotations', version:'3.0.1'
+    providedCompile group: 'com.google.code.findbugs', name: 'jsr305', version:'3.0.2'
+    providedCompile group: 'net.jcip', name: 'jcip-annotations', version:'1.0'
+    providedCompile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
+    providedCompile group: 'org.slf4j', name: 'jul-to-slf4j', version:'1.7.25'
+    providedCompile group: 'com.google.errorprone', name: 'error_prone_annotations', version:'2.0.18'
+    providedCompile(group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version:'5.0.1.Final') {
+exclude(module: 'jboss-logging')
+    }
+    providedCompile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version:'1.0.0.Final'
+    providedCompile group: 'org.infinispan', name: 'infinispan-directory-provider', version:'8.1.0.Final'
+    providedCompile(group: 'org.infinispan', name: 'infinispan-core', version:'8.1.0.Final') {
+exclude(module: 'jboss-marshalling-osgi')
+exclude(module: 'jboss-transaction-api_1.1_spec')
+    }
+    providedCompile group: 'org.jboss.spec.javax.el', name: 'jboss-el-api_3.0_spec', version:'1.0.4.Final'
+    providedCompile group: 'org.jboss.spec.javax.servlet', name: 'jboss-servlet-api_3.1_spec', version:'1.0.0.Final'
+    providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version:'2.2'
+    providedCompile group: 'log4j', name: 'log4j', version:'1.2.17'
+    providedCompile group: 'com.sun.mail', name: 'javax.mail', version:'1.5.5'
+    providedCompile(group: 'javax.activation', name: 'activation', version:'1.1.1') {
+exclude(module: 'jsr305')
+    }
+    providedCompile(group: 'javax.enterprise', name: 'cdi-api', version:'1.2') {
+exclude(module: 'jsr250-api')
+exclude(module: 'el-api')
+exclude(module: 'javax.el-api')
+exclude(module: 'javax.interceptor-api')
+    }
+    providedCompile group: 'javax.xml.stream', name: 'stax-api', version:'1.0-2'
+    providedCompile group: 'org.jboss.security', name: 'jboss-negotiation-common', version:'3.0.0.Final'
+    providedCompile group: 'org.jboss.spec.javax.jms', name: 'jboss-jms-api_2.0_spec', version:'1.0.0.Final'
+    providedCompile group: 'org.jboss.spec.javax.ejb', name: 'jboss-ejb-api_3.2_spec', version:'1.0.0.Final'
+    providedCompile group: 'com.h2database', name: 'h2', version:'1.4.192'
+    providedCompile group: 'org.javassist', name: 'javassist', version:'3.21.0-GA'
+    providedCompile(group: 'org.jboss.logging', name: 'jboss-logging', version:'3.3.0.Final') {
+exclude(module: 'el-api')
+    }
+    providedCompile group: 'org.picketbox', name: 'picketbox', version:'4.9.4.Final'
+    providedCompile group: 'javax.validation', name: 'validation-api', version:'1.1.0.Final'
+    providedCompile group: 'com.beust', name: 'jcommander', version:'1.27'
+    providedCompile group: 'javax.inject', name: 'javax.inject', version:'1'
+    providedCompile group: 'org.jboss.spec.javax.xml.bind', name: 'jboss-jaxb-api_2.2_spec', version:'1.0.4.Final'
+  providedCompile project(':gwt-editor')
+    providedCompile group: 'net.customware.gwt.presenter', name: 'gwt-presenter', version:'1.1.1'
+    providedCompile group: 'de.novanic.gwteventservice', name: 'gwteventservice', version:'1.2.1'
+    providedCompile group: 'org.richfaces.cdk', name: 'annotations', version:'4.5.0.Final'
+}
+
+task packageTests(type: Jar) {
+  from sourceSets.test.output
+  classifier = 'tests'
+}
+artifacts.archives packageTests

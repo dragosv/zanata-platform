@@ -1,0 +1,66 @@
+
+apply plugin: 'war'
+
+jar.enabled = true
+description = 'gwt-editor'
+dependencies {
+    compile(group: 'org.zanata', name: 'zanata-common-api', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'jersey-core')
+exclude(module: 'jsr250-api')
+exclude(module: 'servlet-api')
+exclude(module: 'jaxb-api')
+exclude(module: 'resteasy-jaxb-provider')
+exclude(module: 'resteasy-jaxrs')
+exclude(module: 'resteasy-multipart-provider')
+exclude(module: 'jboss-jaxrs-api_2.0_spec')
+exclude(module: 'validation-api')
+    }
+    compile(group: 'org.zanata', name: 'zanata-common-util', version:'4.5.0-SNAPSHOT') {
+exclude(module: 'xom')
+    }
+  compile project(':gwt-shared')
+    compile group: 'com.google.guava', name: 'guava', version:'23.5-jre'
+    compile group: 'joda-time', name: 'joda-time', version:'2.8.1'
+    compile group: 'org.fusesource.restygwt', name: 'restygwt', version:'2.2.0'
+    compile group: 'net.customware.gwt.dispatch', name: 'gwt-dispatch', version:'1.0.0'
+    compile group: 'com.allen-sauer.gwt.log', name: 'gwt-log', version:'3.2.1'
+    compile group: 'de.novanic.gwteventservice', name: 'eventservice', version:'1.2.1'
+    compile group: 'de.novanic.gwteventservice', name: 'eventservice-rpc', version:'1.2.1'
+    runtime group: 'com.google.gwt', name: 'gwt-servlet', version:'2.8.0'
+    testCompile(group: 'com.google.gwt.gwtmockito', name: 'gwtmockito', version:'1.1.2') {
+exclude(module: 'gwt-dev')
+exclude(module: 'mockito-all')
+    }
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version:'2.8.9'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-library', version:'1.3'
+    testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+    testCompile(group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3') {
+exclude(module: 'commons-logging')
+    }
+  testCompile project(':gwt-test')
+  providedCompile project(':gwt-shared')
+    providedCompile(group: 'org.zanata', name: 'zanata-common-api', version:'4.5.0-SNAPSHOT', classifier:'sources') {
+exclude(module: '*')
+    }
+    providedCompile(group: 'com.google.gwt', name: 'gwt-user', version:'2.8.0') {
+exclude(module: 'validation-api')
+exclude(module: 'javax.servlet-api')
+    }
+    providedCompile group: 'org.jboss.resteasy', name: 'jaxrs-api', version:'3.0.12.Final'
+    providedCompile group: 'javax.validation', name: 'validation-api', version:'1.1.0.Final'
+    providedCompile group: 'com.google.guava', name: 'guava-gwt', version:'23.5-jre'
+    providedCompile group: 'com.google.code.findbugs', name: 'findbugs-annotations', version:'3.0.1'
+    providedCompile group: 'com.google.code.findbugs', name: 'jsr305', version:'3.0.2'
+    providedCompile group: 'net.jcip', name: 'jcip-annotations', version:'1.0'
+    providedCompile group: 'org.jboss.spec.javax.xml.bind', name: 'jboss-jaxb-api_2.2_spec', version:'1.0.4.Final', classifier:'sources'
+    providedCompile group: 'com.google.gwt.inject', name: 'gin', version:'1.5.0'
+    providedCompile group: 'net.customware.gwt.presenter', name: 'gwt-presenter', version:'1.1.1'
+    providedCompile group: 'de.novanic.gwteventservice', name: 'gwteventservice', version:'1.2.1'
+}
+
+task packageTests(type: Jar) {
+  from sourceSets.test.output
+  classifier = 'tests'
+}
+artifacts.archives packageTests

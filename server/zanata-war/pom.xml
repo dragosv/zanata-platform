@@ -1114,10 +1114,14 @@
       <groupId>net.sf.okapi.filters</groupId>
       <artifactId>okapi-filter-regex</artifactId>
     </dependency>
-      <dependency>
-        <groupId>net.sf.okapi.filters</groupId>
-        <artifactId>okapi-filter-ts</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>net.sf.okapi.filters</groupId>
+      <artifactId>okapi-filter-ts</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.okapi.filters</groupId>
+      <artifactId>okapi-filter-xliff</artifactId>
+    </dependency>
     <dependency>
       <groupId>net.sf.okapi</groupId>
       <artifactId>okapi-core</artifactId>

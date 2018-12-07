@@ -68,7 +68,7 @@ public class DocumentTypeTest {
                 containsInAnyOrder("pot", "txt", "dtd", "idml", "html",
                         "htm", "odt", "fodt", "odp", "fodp", "ods", "fods",
                         "odg", "fodg", "odb", "odf", "srt", "sbt", "sub",
-                        "vtt", "properties", "xlf", "xml", "ts", "json"));
+                        "vtt", "properties", "xlf", "xml", "ts", "json", "xliff"));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class DocumentTypeTest {
             containsInAnyOrder("po", "txt", "dtd", "idml", "html",
                 "htm", "odt", "fodt", "odp", "fodp", "ods", "fods",
                 "odg", "fodg", "odb", "odf", "srt", "sbt", "sub",
-                "vtt", "properties", "xlf", "xml", "ts", "json"));
+                "vtt", "properties", "xlf", "xml", "ts", "json", "xliff"));
     }
 
     @Test(expected = UnsupportedOperationException.class)

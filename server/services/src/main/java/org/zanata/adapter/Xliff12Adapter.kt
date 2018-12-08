@@ -32,8 +32,8 @@ import net.sf.okapi.common.resource.RawDocument
 import net.sf.okapi.common.resource.TextContainer
 import net.sf.okapi.common.resource.TextUnit
 import net.sf.okapi.common.skeleton.GenericSkeleton
-import net.sf.okapi.filters.ts.Parameters
-import net.sf.okapi.filters.ts.TsFilter
+import net.sf.okapi.filters.xliff.Parameters
+import net.sf.okapi.filters.xliff.XLIFFFilter
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang3.StringUtils
 import org.zanata.common.ContentState
@@ -56,8 +56,7 @@ import java.util.regex.Pattern
  * Adapter to handle Xliff 1.2 documents.
  * @see [JSON Specification](http://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html)
  *
- * @author Damian Jansen
- * [djansen@redhat.com](mailto:djansen@redhat.com)
+ * @author Dragos Varovici [dvarovici.work@gmail.com](mailto:dvarovici.work@gmail.com)
  */
 
 class Xliff12Adapter : OkapiFilterAdapter(prepareFilter(), OkapiFilterAdapter.IdSource.textUnitId, false) {
@@ -70,8 +69,7 @@ class Xliff12Adapter : OkapiFilterAdapter(prepareFilter(), OkapiFilterAdapter.Id
 
     override fun updateParamsWithDefaults(params: IParameters) {
         val p = params as Parameters
-        p.decodeByteValues = false
-        p.useCodeFinder = false
+        p.allowEmptyTargets = true
     }
 
     @Throws(FileFormatAdapterException::class, IllegalArgumentException::class)
@@ -391,10 +389,10 @@ class Xliff12Adapter : OkapiFilterAdapter(prepareFilter(), OkapiFilterAdapter.Id
     }
 
     companion object {
-        private val log = org.slf4j.LoggerFactory.getLogger(TSAdapter::class.java)
+        private val log = org.slf4j.LoggerFactory.getLogger(Xliff12Adapter::class.java)
 
-        private fun prepareFilter(): TsFilter {
-            return TsFilter()
+        private fun prepareFilter(): XLIFFFilter {
+            return XLIFFFilter()
         }
     }
 }

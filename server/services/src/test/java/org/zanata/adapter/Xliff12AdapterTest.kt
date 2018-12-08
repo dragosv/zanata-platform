@@ -84,112 +84,50 @@ class Xliff12AdapterTest : AbstractAdapterTest<Xliff12Adapter>() {
     @Test
     fun parseXliff12() {
         val resource: Resource = withTempFile("""
-            <!DOCTYPE Xliff12 []>
-            <Xliff12>
-              <context>
-                <name>Test</name>
-                  <message>
-                    <source>Line One</source>
-                    <translation>Teststring1</translation>
-                  </message>
-                  <message>
-                  <source>Line Two</source>
-                  <translation>Teststring2</translation>
-                  </message>
-                  <message>
-                  <source>Line Three</source>
-                  <translation>Teststring3</translation>
-                  </message>
-              </context>
-            </Xliff12>
+            <?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file datatype="x-unknown" original="en.properties" source-language="en" target-language="fr">
+        <body>
+            <trans-unit approved="yes" extradata="label.yes" id="3d9f7a2d49f83df954d2e71f510dacfd" resname="label.yes">
+                <source xml:lang="en">Yes</source>
+            </trans-unit>
+            <trans-unit approved="yes" extradata="label.no" id="972c7461536db21949e47a701a037598" resname="label.no">
+                <source xml:lang="en">No</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
         """.trimIndent(), this::parseTestFile)
         assertThat(getContext(resource.textFlows[0])).isEqualTo("Test")
-        assertThat(resource.textFlows).hasSize(3)
-        assertThat(resource.textFlows[0].contents).containsExactly("Line One")
-        assertThat(resource.textFlows[1].contents).containsExactly("Line Two")
-        assertThat(resource.textFlows[2].contents).containsExactly("Line Three")
-    }
-
-    /*
-     * Xliff12 plural sets source textflow to have same content for number of plurals
-     */
-    @Test
-    fun testXliff12WithPlurals() {
-        val resource: Resource = withTempFile("""
-            <!DOCTYPE Xliff12 []>
-            <Xliff12 version="2.1" sourcelanguage="en" language="sv">
-              <context>
-                <name>testContext</name>
-                <message numerus="yes">
-                  <source>%1 takes at most %n argument(s). %2 is therefore invalid.</source>
-                  <translation>
-                    <numerusform>%1 prend au maximum %n argument. %2 est donc invalide.</numerusform>
-                    <numerusform>%1 prend au maximum %n arguments. %2 est donc invalide.</numerusform>
-                  </translation>
-                </message>
-              </context>
-            </Xliff12>
-        """.trimIndent(), this::parseTestFile)
-        assertThat(resource.textFlows).hasSize(1)
-        assertThat(resource.textFlows[0].isPlural).isTrue()
-        assertThat(resource.textFlows[0].contents.size).isEqualTo(2)
-    }
-
-    @Test
-    fun testXliff12WithMultipleContexts() {
-        val resource: Resource = withTempFile("""
-            <!DOCTYPE Xliff12 []>
-            <Xliff12 version="2.1" sourcelanguage="en" language="sv">
-            <context>
-              <name>testContext1</name>
-              <message>
-                <source>First source</source>
-              </message>
-            </context>
-            <context>
-              <name>testContext2</name>
-                <message>
-                  <source>Second source</source>
-                </message>
-            </context>
-            </Xliff12>
-        """.trimIndent(), this::parseTestFile)
         assertThat(resource.textFlows).hasSize(2)
-        assertThat(resource.textFlows[0].contents).containsExactly("First source")
-        assertThat(getContext(resource.textFlows[0])).isEqualTo("testContext1")
-        assertThat(resource.textFlows[1].contents).containsExactly("Second source")
-        assertThat(getContext(resource.textFlows[1])).isEqualTo("testContext2")
+        assertThat(resource.textFlows[0].contents).containsExactly("Yes")
+        assertThat(resource.textFlows[1].contents).containsExactly("No")
     }
 
     @Test
     fun testXliff12WithComments() {
         val resource: Resource = withTempFile("""
-            <!DOCTYPE Xliff12 []>
-            <Xliff12>
-              <context>
-                <name>Test</name>
-                <message>
-                  <extracomment>Extra comment</extracomment>
-                  <comment>First comment</comment>
-                  <source>Line One</source>
-                  <translation>Teststring1</translation>
-                </message>
-                <message>
-                  <comment>Second comment</comment>
-                  <source>Line Two</source>
-                  <translation>Teststring2</translation>
-                </message>
-                <message><source>Line Three</source>
-                <translation>Teststring3</translation>
-                </message>
-              </context>
-            </Xliff12>
+            <?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file datatype="x-unknown" original="en.properties" source-language="en" target-language="fr">
+        <body>
+            <trans-unit approved="yes" id="42df45dbc4ee8351bbb85317e249f186" resname="button.accept">
+                <source xml:lang="en">Accept</source>
+                <note from="developer">Accept Button</note>
+            </trans-unit>
+            <trans-unit approved="yes" id="2fdea6b7c16fb81dc680510d695992c2" resname="button.cancel">
+                <source xml:lang="en">Cancel</source>
+                <note from="developer">Cancel Button</note>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
         """.trimIndent(), this::parseTestFile)
-        assertThat(resource.textFlows).hasSize(3)
-        assertThat(resource.textFlows[0].contents).containsExactly("Line One")
-        assertThat(getComment(resource.textFlows[0])).isEqualTo("Extra comment")
-        assertThat(resource.textFlows[1].contents).containsExactly("Line Two")
-        assertThat(getComment(resource.textFlows[1])).isEqualTo("Second comment")
+        assertThat(resource.textFlows).hasSize(2)
+        assertThat(resource.textFlows[0].contents).containsExactly("Accept")
+        assertThat(getComment(resource.textFlows[0])).isEqualTo("Accept Button")
+        assertThat(resource.textFlows[1].contents).containsExactly("Cancel")
+        assertThat(getComment(resource.textFlows[1])).isEqualTo("Cancel Button")
     }
 
     @Test
@@ -231,23 +169,23 @@ class Xliff12AdapterTest : AbstractAdapterTest<Xliff12Adapter>() {
     @Test
     fun testUploadedTranslationsFile() {
         withTempFile("""
-            <!DOCTYPE Xliff12 []>
-            <Xliff12 version="2.1" sourcelanguage="en" language="dv-LL">
-              <context>
-                <name>testContext1</name>
-                <message>
-                  <source>First source</source>
-                  <translation>Foun’dé metalkcta</translation>
-                </message>
-              </context>
-              <context>
-              <name>testContext2</name>
-                <message>
-                  <source>Second source</source>
-                  <translation>Tba’dé metalkcta</translation>
-                </message>
-              </context>
-            </Xliff12>
+            <?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file datatype="x-unknown" original="en.properties" source-language="en" target-language="fr">
+        <body>
+            <trans-unit approved="yes" id="42df45dbc4ee8351bbb85317e249f186" resname="button.accept">
+                <source xml:lang="en">Accept</source>
+                <target state="translated" xml:lang="fr">Accepter</target>
+                <note from="developer">Accept Button</note>
+            </trans-unit>
+            <trans-unit approved="yes" id="2fdea6b7c16fb81dc680510d695992c2" resname="button.cancel">
+                <source xml:lang="en">Cancel</source>
+                <target state="translated" xml:lang="fr">Annuler</target>
+                <note from="developer">Cancel Button</note>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
         """.trimIndent()) { file ->
             val transParser = ParserOptions(file.toURI(), FR, "")
             val translationsResource = getAdapter().parseTranslationFile(transParser)
@@ -272,28 +210,23 @@ class Xliff12AdapterTest : AbstractAdapterTest<Xliff12Adapter>() {
 
     private fun testTranslatedXliff12Document(approvedOnly: Boolean) {
         withTempFile("""
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE Xliff12 []>
-            <Xliff12 version="2.1" language="en_US">
-            <context>
-              <name>testContext1</name>
-              <message>
-                <source>First source</source>
-              </message>
-            </context>
-            <context>
-              <name>testContext2</name>
-              <message>
-                <source>Second source</source>
-              </message>
-            </context>
-            <context>
-              <name>testContext3</name>
-              <message>
-                <source>Third source</source>
-              </message>
-            </context>
-            </Xliff12>
+            <?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file datatype="x-unknown" original="en.properties" source-language="en" target-language="fr">
+        <body>
+            <trans-unit approved="yes" id="42df45dbc4ee8351bbb85317e249f186" resname="button.accept">
+                <source xml:lang="en">Accept</source>
+                <target state="translated" xml:lang="fr">Accepter</target>
+                <note from="developer">Accept Button</note>
+            </trans-unit>
+            <trans-unit approved="yes" id="2fdea6b7c16fb81dc680510d695992c2" resname="button.cancel">
+                <source xml:lang="en">Cancel</source>
+                <target state="translated" xml:lang="fr">Annuler</target>
+                <note from="developer">Cancel Button</note>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
         """.trimIndent()) { originalFile ->
             val resource = parseTestFile(originalFile)
             val transResource = TranslationsResource()
@@ -358,15 +291,18 @@ class Xliff12AdapterTest : AbstractAdapterTest<Xliff12Adapter>() {
     fun testFailToParseXliff12Document() {
         try {
             withTempFile("""
-                <!DOCTYPE Xliff12 []>
-                <Xliff12 version="2.1" sourcelanguage="en" language="sv">
-                  <!-- Contains a double bracket here -->
-                  <<context>
-                  <name>testContext1</name>
-                  <message>
-                    <source>First source</source>
-                  </message>
-                </Xliff12>
+            <?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file datatype="x-unknown" original="en.properties" source-language="en" target-language="fr">
+        <body>
+            <trans-unit approved="yes" extradata="label.yes" id="3d9f7a2d49f83df954d2e71f510dacfd" resname="label.yes">
+                <source xml:lang="en">Yes</source>
+            </trans-unit>
+            <trans-unit approved="yes" extradata="label.no" id="972c7461536db21949e47a701a037598" resname="label.no">
+                <source xml:lang="en">No</source>
+            </trans-unit>
+        </body>
+    </file>
             """.trimIndent(), this::parseTestFile)
             fail("Expected a FileFormatAdapterException")
         } catch (ffae: FileFormatAdapterException) {
@@ -377,15 +313,19 @@ class Xliff12AdapterTest : AbstractAdapterTest<Xliff12Adapter>() {
     @Test
     fun testFailToParseXliff12Translation() {
         withTempFile("""
-                <!DOCTYPE Xliff12 []>
-                <Xliff12 version="2.1" sourcelanguage="en" language="sv">
-                  <!-- Contains a double bracket here -->
-                  <<context>
-                  <name>testContext1</name>
-                  <message>
-                    <source>First source</source>
-                  </message>
-                </Xliff12>
+            <?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file datatype="x-unknown" original="en.properties" source-language="en" target-language="fr">
+        <body>
+            <trans-unit approved="yes" extradata="label.yes" id="3d9f7a2d49f83df954d2e71f510dacfd" resname="label.yes">
+                <source xml:lang="en">Yes</source>
+            </trans-unit>
+            <trans-unit approved="yes" extradata="label.no" id="972c7461536db21949e47a701a037598" resname="label.no">
+                <source xml:lang="en">No</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
             """.trimIndent()) { transFile ->
             val rawDocument = RawDocument(
                     FileUtils.readFileToString(transFile, Charsets.UTF_8),
@@ -420,7 +360,7 @@ class Xliff12AdapterTest : AbstractAdapterTest<Xliff12Adapter>() {
 
     @Test
     fun nonDocPartIsCaught() {
-        val base = """<Xliff12 version="2.1" language="test">"""
+        val base = """xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">"""
         val event = Event().apply {
             eventType = EventType.START_DOCUMENT
             resource = StartDocument().apply {
@@ -433,39 +373,6 @@ class Xliff12AdapterTest : AbstractAdapterTest<Xliff12Adapter>() {
         } catch (ffae: FileFormatAdapterException) {
             // Pass
         }
-
-    }
-
-    @Test
-    fun sourceLanguageAttributeIsNotAltered() {
-        val base = """<Xliff12 version="2.1" language="en-GB" sourcelanguage="mo_PH">"""
-        val event = Event().apply {
-            eventType = EventType.DOCUMENT_PART
-            resource = DocumentPart().apply {
-                skeleton = GenericSkeleton(base)
-            }
-        }
-        assertThat(adapter.replaceLocaleInDocPart(event,
-                toOkapiLocale(org.zanata.common.LocaleId("en-US"))).toString())
-                .describedAs("Source language is not altered")
-                .isEqualTo("""<Xliff12 version="2.1" language="en-US" sourcelanguage="mo_PH">""")
-    }
-
-    @Test
-    @Ignore("Currently cannot support locales with user parts")
-    fun localeModifiersAreNotLost() {
-        val base = """<Xliff12 version="2.1" language="en-GB">"""
-        val event = Event().apply {
-            eventType = EventType.DOCUMENT_PART
-            resource = DocumentPart().apply {
-                skeleton = GenericSkeleton(base)
-            }
-        }
-        assertThat(adapter.replaceLocaleInDocPart(event,
-                toOkapiLocale(org.zanata.common.LocaleId("en-US.UTF8")))
-                    .toString())
-                .describedAs("Source language is not altered")
-                .isEqualTo("""<Xliff12 version="2.1" language="en-US.UTF8">""")
     }
 
     private fun getContext(textFlow: TextFlow): String? {
